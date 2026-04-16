@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"context"
 	"encoding/csv"
 	"fmt"
+	"math"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -10,13 +12,16 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 
 	"job-tracker/backend/models"
 )
 
 type ApplicationHandler struct {
-	DB *gorm.DB
+	DB    *gorm.DB
+	Redis *redis.Client
 }
 
 type CreateApplicationInput struct {
@@ -42,16 +47,8 @@ type UpdateApplicationInput struct {
 	Priority      string `json:"priority"`
 }
 
-type StatsResponse struct {
-	TotalApplied  int64   `json:"total_applied"`
-	InInterview   int64   `json:"in_interview"`
-	Offers        int64   `json:"offers"`
-	Rejections    int64   `json:"rejections"`
-	RejectionRate float64 `json:"rejection_rate"`
-}
-
-func NewApplicationHandler(db *gorm.DB) *ApplicationHandler {
-	return &ApplicationHandler{DB: db}
+func NewApplicationHandler(db *gorm.DB, redisClient *redis.Client) *ApplicationHandler {
+	return &ApplicationHandler{DB: db, Redis: redisClient}
 }
 
 func getUserID(c *gin.Context) uint {
@@ -169,6 +166,9 @@ func (h *ApplicationHandler) CreateApplication(c *gin.Context) {
 	}
 
 	h.createStatusHistory(application.ID, application.Status)
+	h.invalidateStatsCache(userID)
+
+	log.Info().Str("company", application.Company).Uint("user_id", userID).Msg("application created")
 
 	c.JSON(http.StatusCreated, application)
 }
@@ -176,16 +176,32 @@ func (h *ApplicationHandler) CreateApplication(c *gin.Context) {
 func (h *ApplicationHandler) GetApplications(c *gin.Context) {
 	userID := getUserID(c)
 
-	var applications []models.Application
-	query := h.DB.Where("user_id = ?", userID)
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	if page < 1 {
+		page = 1
+	}
+	if limit < 1 || limit > 100 {
+		limit = 10
+	}
+	offset := (page - 1) * limit
+
+	base := h.DB.Model(&models.Application{}).Where("user_id = ?", userID)
 
 	if status := c.Query("status"); status != "" {
-		query = query.Where("status = ?", status)
+		base = base.Where("status = ?", status)
 	}
 
 	if search := strings.TrimSpace(c.Query("search")); search != "" {
 		like := "%" + strings.ToLower(search) + "%"
-		query = query.Where("LOWER(company) LIKE ? OR LOWER(role) LIKE ?", like, like)
+		base = base.Where("LOWER(company) LIKE ? OR LOWER(role) LIKE ?", like, like)
+	}
+
+	var total int64
+	if err := base.Count(&total).Error; err != nil {
+		log.Error().Err(err).Msg("db query failed")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to count applications"})
+		return
 	}
 
 	order := c.Query("order")
@@ -195,17 +211,29 @@ func (h *ApplicationHandler) GetApplications(c *gin.Context) {
 
 	switch c.Query("sort_by") {
 	case "company":
-		query = query.Order("company " + order)
+		base = base.Order("company " + order)
 	default:
-		query = query.Order("applied_date " + order)
+		base = base.Order("applied_date " + order)
 	}
 
-	if err := query.Find(&applications).Error; err != nil {
+	var applications []models.Application
+	if err := base.Offset(offset).Limit(limit).Find(&applications).Error; err != nil {
+		log.Error().Err(err).Msg("db query failed")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch applications"})
 		return
 	}
 
-	c.JSON(http.StatusOK, applications)
+	totalPages := int64(math.Ceil(float64(total) / float64(limit)))
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": applications,
+		"meta": gin.H{
+			"total":       total,
+			"page":        page,
+			"limit":       limit,
+			"total_pages": totalPages,
+		},
+	})
 }
 
 func (h *ApplicationHandler) UpdateApplication(c *gin.Context) {
@@ -308,6 +336,7 @@ func (h *ApplicationHandler) UpdateApplication(c *gin.Context) {
 	if nextStatus != current.Status {
 		h.createStatusHistory(uint(id), nextStatus)
 	}
+	h.invalidateStatsCache(userID)
 
 	var updated models.Application
 	if err := h.DB.First(&updated, uint(id)).Error; err != nil {
@@ -339,7 +368,17 @@ func (h *ApplicationHandler) DeleteApplication(c *gin.Context) {
 		return
 	}
 
+	h.invalidateStatsCache(userID)
+
 	c.JSON(http.StatusOK, gin.H{"message": "application deleted"})
+}
+
+func (h *ApplicationHandler) invalidateStatsCache(userID uint) {
+	if h.Redis == nil {
+		return
+	}
+	cacheKey := fmt.Sprintf("stats:%d", userID)
+	_ = h.Redis.Del(context.Background(), cacheKey).Err()
 }
 
 func (h *ApplicationHandler) GetApplicationHistory(c *gin.Context) {
@@ -402,27 +441,4 @@ func (h *ApplicationHandler) ExportApplicationsCSV(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("failed to write csv: %v", err)})
 		return
 	}
-}
-
-func (h *ApplicationHandler) GetStats(c *gin.Context) {
-	userID := getUserID(c)
-
-	var total, inInterview, offers, rejections int64
-	h.DB.Model(&models.Application{}).Where("user_id = ?", userID).Count(&total)
-	h.DB.Model(&models.Application{}).Where("user_id = ? AND status = ?", userID, "interview").Count(&inInterview)
-	h.DB.Model(&models.Application{}).Where("user_id = ? AND status = ?", userID, "offer").Count(&offers)
-	h.DB.Model(&models.Application{}).Where("user_id = ? AND status = ?", userID, "rejected").Count(&rejections)
-
-	var rejectionRate float64
-	if total > 0 {
-		rejectionRate = float64(rejections) / float64(total) * 100
-	}
-
-	c.JSON(http.StatusOK, StatsResponse{
-		TotalApplied:  total,
-		InInterview:   inInterview,
-		Offers:        offers,
-		Rejections:    rejections,
-		RejectionRate: rejectionRate,
-	})
 }

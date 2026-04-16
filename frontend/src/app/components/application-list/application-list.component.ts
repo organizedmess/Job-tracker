@@ -22,6 +22,7 @@ import {
 export class ApplicationListComponent implements OnInit, OnDestroy {
   applications: Application[] = [];
   selectedApplication: Application | null = null;
+  historyDrawerOpen = false;
   statusHistory: StatusHistoryItem[] = [];
   statuses: Application["status"][] = [
     "applied",
@@ -173,6 +174,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       return;
     }
     this.selectedApplication = application;
+    this.historyDrawerOpen = true;
     this.historyLoading = true;
     this.applicationService.getHistory(application.id).subscribe({
       next: (history) => {
@@ -193,6 +195,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   closeHistory(): void {
+    this.historyDrawerOpen = false;
     this.selectedApplication = null;
     this.statusHistory = [];
   }

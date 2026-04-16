@@ -110,6 +110,42 @@
   padding-bottom: 8px;
 }
 
+.timeline-item span {
+  font-weight: 600;
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 6px 10px 12px !important;
+}
+
+.timeline-action-btn,
+.delete-action-btn {
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  padding: 4px 10px;
+}
+
+.timeline-action-btn {
+  background: rgba(79, 70, 229, 0.14);
+  color: #4f46e5 !important;
+}
+
+.delete-action-btn {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444 !important;
+}
+
+.timeline-action-btn:hover {
+  background: rgba(79, 70, 229, 0.22);
+}
+
+.delete-action-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
 :host-context(body.dark-theme) h2,
 :host-context(body.dark-theme) .meta,
 :host-context(body.dark-theme) .drawer-header h3,
@@ -146,6 +182,23 @@
 
 :host-context(body.dark-theme) .timeline-item {
   border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:host-context(body.dark-theme) .history-drawer,
+:host-context(body.dark-theme) .history-drawer p,
+:host-context(body.dark-theme) .history-drawer span,
+:host-context(body.dark-theme) .history-drawer strong {
+  color: #e2e8f0;
+}
+
+:host-context(body.dark-theme) .timeline-action-btn {
+  background: rgba(99, 102, 241, 0.24);
+  color: #a5b4fc !important;
+}
+
+:host-context(body.dark-theme) .delete-action-btn {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fda4af !important;
 }
 
 @media (max-width: 768px) {

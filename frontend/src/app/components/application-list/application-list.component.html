@@ -73,8 +73,8 @@
               </mat-form-field>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-button color="primary" (click)="openHistory(application)">View Timeline</button>
-              <button mat-button color="warn" (click)="onDelete(application.id)">Delete</button>
+              <button mat-button color="primary" class="timeline-action-btn" (click)="openHistory(application)">View Timeline</button>
+              <button mat-button color="warn" class="delete-action-btn" (click)="onDelete(application.id)">Delete</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -90,7 +90,7 @@
     </section>
   </mat-drawer-content>
 
-  <mat-drawer position="end" [opened]="!!selectedApplication" mode="over" class="history-drawer">
+  <mat-drawer position="end" [opened]="historyDrawerOpen" (closedStart)="closeHistory()" mode="over" class="history-drawer">
     <div class="drawer-header">
       <h3>Timeline</h3>
       <button mat-icon-button (click)="closeHistory()"><mat-icon>close</mat-icon></button>

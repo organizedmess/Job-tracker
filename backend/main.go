@@ -7,6 +7,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog"
+	zlog "github.com/rs/zerolog/log"
 
 	"job-tracker/backend/config"
 	"job-tracker/backend/handlers"
@@ -16,6 +18,9 @@ import (
 )
 
 func main() {
+	zerolog.TimeFieldFormat = time.RFC3339
+	zlog.Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
+
 	db, err := config.ConnectDB()
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
@@ -32,6 +37,8 @@ func main() {
 	emailSvc := services.NewEmailService(db)
 	emailSvc.StartReminderScheduler()
 
+	redisClient := config.ConnectRedis()
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:4200"},
@@ -41,7 +48,7 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	applicationHandler := handlers.NewApplicationHandler(db)
+	applicationHandler := handlers.NewApplicationHandler(db, redisClient)
 	authHandler := handlers.NewAuthHandler(db)
 	routes.RegisterRoutes(router, applicationHandler, authHandler)
 

@@ -8,6 +8,9 @@ import (
 )
 
 func RegisterRoutes(router *gin.Engine, applicationHandler *handlers.ApplicationHandler, authHandler *handlers.AuthHandler) {
+	router.Use(middleware.LoggerMiddleware())
+	router.Use(middleware.RateLimitMiddleware())
+
 	api := router.Group("/api")
 	{
 		auth := api.Group("/auth")

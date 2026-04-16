@@ -152,6 +152,14 @@ body.dark-theme .mat-mdc-option {
   color: #e2e8f0 !important;
 }
 
+body.dark-theme .mat-mdc-option .mdc-list-item__primary-text,
+body.dark-theme .mat-mdc-option .mat-pseudo-checkbox,
+body.dark-theme .mat-mdc-option .mat-pseudo-checkbox-full,
+body.dark-theme .mat-mdc-option .mat-pseudo-checkbox-minimal {
+  color: #e2e8f0 !important;
+  border-color: #e2e8f0 !important;
+}
+
 body.dark-theme .mat-mdc-option:hover,
 body.dark-theme .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
   background: rgba(129, 140, 248, 0.18) !important;
@@ -245,8 +253,8 @@ body.dark-theme .mat-mdc-header-cell {
   border-bottom-color: rgba(255,255,255,0.08) !important;
 }
 
-/* Chips */
-body.dark-theme .mat-mdc-chip {
+/* Chips (exclude status badges, which define their own colors) */
+body.dark-theme .mat-mdc-chip:not(.status-applied):not(.status-interview):not(.status-offer):not(.status-rejected) {
   background: rgba(129,140,248,0.15) !important;
   color: #818cf8 !important;
 }
