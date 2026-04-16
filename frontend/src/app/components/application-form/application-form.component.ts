@@ -8,13 +8,18 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import * as InspirationalQuotes from "inspirational-quotes";
+import quotesData from "inspirational-quotes/data/data.json";
 
 import { ApplicationService } from "../../services/application.service";
 
 interface QuoteItem {
   text: string;
   author: string;
+}
+
+interface QuoteSourceItem {
+  text: string;
+  from: string;
 }
 
 @Component({
@@ -32,6 +37,8 @@ export class ApplicationFormComponent implements OnInit {
     text: "Small, consistent actions compound into meaningful career progress.",
     author: "Job Tracker",
   };
+  private readonly quotePool = quotesData as QuoteSourceItem[];
+  private currentQuoteIndex = -1;
 
   private readonly urlRegex = /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[^\s]*)?$/i;
 
@@ -72,10 +79,16 @@ export class ApplicationFormComponent implements OnInit {
 
   refreshQuote(): void {
     try {
-      const nextQuote = InspirationalQuotes.getQuote() as QuoteItem;
+      if (!this.quotePool.length) {
+        throw new Error("No quotes available");
+      }
+
+      const nextIndex = this.getNextQuoteIndex();
+      const nextQuote = this.quotePool[nextIndex];
+      this.currentQuoteIndex = nextIndex;
       this.quote = {
         text: nextQuote.text,
-        author: nextQuote.author,
+        author: nextQuote.from,
       };
     } catch {
       this.quote = {
@@ -83,6 +96,19 @@ export class ApplicationFormComponent implements OnInit {
         author: "Job Tracker",
       };
     }
+  }
+
+  private getNextQuoteIndex(): number {
+    if (this.quotePool.length === 1) {
+      return 0;
+    }
+
+    let nextIndex = this.currentQuoteIndex;
+    while (nextIndex === this.currentQuoteIndex) {
+      nextIndex = Math.floor(Math.random() * this.quotePool.length);
+    }
+
+    return nextIndex;
   }
 
   onSubmit(): void {

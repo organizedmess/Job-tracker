@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,

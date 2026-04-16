@@ -18,6 +18,12 @@ body.dark-theme {
   color: #e2e8f0;
 }
 
+body.dark-theme .mat-drawer-container,
+body.dark-theme .mat-drawer-content,
+body.dark-theme .content {
+  background: #0f172a !important;
+}
+
 /* Sidenav / drawer */
 body.dark-theme .mat-drawer,
 body.dark-theme .mat-sidenav {
@@ -93,7 +99,8 @@ body.dark-theme textarea.mat-mdc-input-element::placeholder {
 /* Label / floating label */
 body.dark-theme .mdc-floating-label,
 body.dark-theme .mat-mdc-floating-label {
-  color: #94a3b8 !important;
+  color: #cbd5e1 !important;
+  opacity: 1 !important;
 }
 
 body.dark-theme .mat-mdc-form-field .mat-mdc-form-field-focus-overlay {
@@ -103,6 +110,11 @@ body.dark-theme .mat-mdc-form-field .mat-mdc-form-field-focus-overlay {
 body.dark-theme .mdc-text-field--focused .mdc-floating-label,
 body.dark-theme .mdc-text-field--focused .mat-mdc-floating-label {
   color: #818cf8 !important;
+}
+
+body.dark-theme .mdc-text-field--outlined .mdc-floating-label--float-above {
+  color: #cbd5e1 !important;
+  opacity: 1 !important;
 }
 
 /* Outline border */
@@ -165,6 +177,34 @@ body.dark-theme .mat-mdc-form-field-subscript-wrapper {
 body.dark-theme .mat-mdc-raised-button.mat-primary {
   background-color: #4f46e5 !important;
   color: #fff !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button,
+body.dark-theme .mat-mdc-stroked-button,
+body.dark-theme button[mat-stroked-button] {
+  color: #e2e8f0 !important;
+  border-color: rgba(226, 232, 240, 0.45) !important;
+  background: rgba(15, 23, 42, 0.25) !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button .mdc-button__label,
+body.dark-theme .mat-mdc-stroked-button .mdc-button__label,
+body.dark-theme button[mat-stroked-button] .mdc-button__label {
+  color: #e2e8f0 !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button:hover,
+body.dark-theme .mat-mdc-stroked-button:hover,
+body.dark-theme button[mat-stroked-button]:hover {
+  background: rgba(99, 102, 241, 0.14) !important;
+  border-color: rgba(165, 180, 252, 0.65) !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button[disabled],
+body.dark-theme .mat-mdc-stroked-button[disabled],
+body.dark-theme button[mat-stroked-button][disabled] {
+  color: rgba(148, 163, 184, 0.7) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 body.dark-theme .mat-mdc-icon-button {
