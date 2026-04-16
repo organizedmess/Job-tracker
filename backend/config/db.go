@@ -12,6 +12,14 @@ import (
 func ConnectDB() (*gorm.DB, error) {
 	_ = godotenv.Load()
 
+	if dbURL := os.Getenv("DB_URL"); dbURL != "" {
+		db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+		if err != nil {
+			return nil, err
+		}
+		return db, nil
+	}
+
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")

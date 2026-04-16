@@ -1,18 +1,108 @@
 .page {
-  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.form-card,
+.quote-card {
+  border-radius: 18px;
 }
 
 .form-grid {
   display: grid;
-  gap: 12px;
-  max-width: 640px;
-}
-
-.form-grid label {
-  display: grid;
-  gap: 6px;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .full-width {
-  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.quote-card {
+  position: sticky;
+  top: 92px;
+  padding: 28px;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.02), rgba(15, 23, 42, 0.08));
+}
+
+.quote-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.quote-card h3 {
+  margin: 12px 0 16px;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.quote-text {
+  margin: 0 0 20px;
+  font-size: 20px;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+.quote-author {
+  margin: 0 0 28px;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.quote-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: #475569;
+}
+
+.quote-footer span {
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+button[mat-raised-button] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 160px;
+}
+
+@media (max-width: 1100px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-card {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .quote-card {
+    padding: 22px;
+  }
+
+  .quote-card h3 {
+    font-size: 24px;
+  }
+
+  .quote-text {
+    font-size: 18px;
+  }
+
+  .quote-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -12,6 +12,7 @@ import (
 	"job-tracker/backend/handlers"
 	"job-tracker/backend/models"
 	"job-tracker/backend/routes"
+	"job-tracker/backend/services"
 )
 
 func main() {
@@ -24,6 +25,13 @@ func main() {
 		log.Fatalf("failed to auto-migrate models: %v", err)
 	}
 
+	if err := db.AutoMigrate(&models.StatusHistory{}); err != nil {
+		log.Fatalf("failed to auto-migrate status history model: %v", err)
+	}
+
+	emailSvc := services.NewEmailService(db)
+	emailSvc.StartReminderScheduler()
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:4200"},
@@ -34,7 +42,8 @@ func main() {
 	}))
 
 	applicationHandler := handlers.NewApplicationHandler(db)
-	routes.RegisterRoutes(router, applicationHandler)
+	authHandler := handlers.NewAuthHandler(db)
+	routes.RegisterRoutes(router, applicationHandler, authHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {

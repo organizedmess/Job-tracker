@@ -1,0 +1,37 @@
+<section class="dashboard">
+  <h2>Dashboard</h2>
+
+  <app-loading-spinner *ngIf="loading" message="Loading dashboard..."></app-loading-spinner>
+
+  <ng-container *ngIf="!loading">
+    <div class="stat-cards">
+      <mat-card class="card">
+        <span class="card-label">Total Applied</span>
+        <span class="card-value">{{ stats.total_applied }}</span>
+      </mat-card>
+      <mat-card class="card">
+        <span class="card-label">In Interview</span>
+        <span class="card-value">{{ stats.in_interview }}</span>
+      </mat-card>
+      <mat-card class="card">
+        <span class="card-label">Offers</span>
+        <span class="card-value">{{ stats.offers }}</span>
+      </mat-card>
+      <mat-card class="card">
+        <span class="card-label">Rejection Rate</span>
+        <span class="card-value">{{ stats.rejection_rate | number: '1.0-1' }}%</span>
+      </mat-card>
+    </div>
+
+    <div class="charts">
+      <mat-card class="chart-box">
+        <h3>Applications by Status</h3>
+        <canvas #pieCanvas></canvas>
+      </mat-card>
+      <mat-card class="chart-box">
+        <h3>Applications per Week</h3>
+        <canvas #lineCanvas></canvas>
+      </mat-card>
+    </div>
+  </ng-container>
+</section>

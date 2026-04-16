@@ -1,26 +1,139 @@
+.list-drawer-shell {
+  min-height: calc(100vh - 80px);
+}
+
 .page {
-  padding: 24px;
+  padding: 8px;
 }
 
 .page-header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.filters-card {
+  margin-bottom: 18px;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.app-card {
+  border-radius: 14px;
+}
+
+.chips-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
 }
 
-.applications-table {
+.meta {
+  margin: 8px 0;
+  color: #666;
+}
+
+.status-select {
   width: 100%;
-  border-collapse: collapse;
+  margin-top: 10px;
 }
 
-.applications-table th,
-.applications-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.priority-high {
+  color: #e53935;
+  font-weight: 700;
 }
 
-.applications-table th {
-  background-color: #f6f6f6;
+.priority-medium {
+  color: #ef6c00;
+  font-weight: 700;
+}
+
+.priority-low {
+  color: #6d6d6d;
+  font-weight: 700;
+}
+
+.empty-state {
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.empty-state img {
+  width: 280px;
+  max-width: 100%;
+}
+
+.history-drawer {
+  width: 360px;
+  padding: 16px;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeline {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #ececec;
+  padding-bottom: 8px;
+}
+
+:host-context(body.dark-theme) h2,
+:host-context(body.dark-theme) .meta,
+:host-context(body.dark-theme) .drawer-header h3,
+:host-context(body.dark-theme) .timeline-item,
+:host-context(body.dark-theme) .empty-state h3,
+:host-context(body.dark-theme) .app-card a,
+:host-context(body.dark-theme) .mat-mdc-card-subtitle {
+  color: #cbd5e1;
+}
+
+:host-context(body.dark-theme) .mat-mdc-card-title {
+  color: #f8fafc;
+}
+
+:host-context(body.dark-theme) .priority-low {
+  color: #cbd5e1;
+}
+
+:host-context(body.dark-theme) .timeline-item {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  .history-drawer {
+    width: 100%;
+  }
 }

@@ -1,0 +1,67 @@
+.dashboard {
+  padding: 24px;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.card-label {
+  font-size: 13px;
+  color: #888;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+.chart-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.chart-box h3 {
+  margin: 0 0 16px;
+  font-size: 15px;
+}
+
+:host-context(body.dark-theme) h2,
+:host-context(body.dark-theme) .card-label,
+:host-context(body.dark-theme) .card-value,
+:host-context(body.dark-theme) .chart-box h3 {
+  color: #e2e8f0;
+}
+
+:host-context(body.dark-theme) .card,
+:host-context(body.dark-theme) .chart-box {
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.28);
+}
+
+@media (max-width: 768px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}

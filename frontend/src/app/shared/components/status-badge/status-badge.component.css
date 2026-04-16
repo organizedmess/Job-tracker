@@ -1,0 +1,19 @@
+.status-applied {
+  background: #1e88e5 !important;
+  color: #fff !important;
+}
+
+.status-interview {
+  background: #f9a825 !important;
+  color: #212121 !important;
+}
+
+.status-offer {
+  background: #43a047 !important;
+  color: #fff !important;
+}
+
+.status-rejected {
+  background: #e53935 !important;
+  color: #fff !important;
+}

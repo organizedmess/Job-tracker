@@ -1,34 +1,82 @@
 <section class="page">
-  <h2>Add Application</h2>
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Add Application</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Company</mat-label>
+          <input matInput formControlName="company" />
+          <mat-error *ngIf="applicationForm.controls.company.hasError('required')">Company is required</mat-error>
+        </mat-form-field>
 
-  <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="form-grid">
-    <label>
-      Company
-      <input type="text" formControlName="company" />
-    </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Role</mat-label>
+          <input matInput formControlName="role" />
+          <mat-error *ngIf="applicationForm.controls.role.hasError('required')">Role is required</mat-error>
+        </mat-form-field>
 
-    <label>
-      Role
-      <input type="text" formControlName="role" />
-    </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statuses" [value]="status">{{ status | titlecase }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <label>
-      Status
-      <select formControlName="status">
-        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
-      </select>
-    </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Applied Date</mat-label>
+          <input matInput type="date" formControlName="applied_date" />
+        </mat-form-field>
 
-    <label>
-      Applied Date
-      <input type="date" formControlName="applied_date" />
-    </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Priority</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option *ngFor="let p of priorities" [value]="p">{{ p | titlecase }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <label class="full-width">
-      Notes
-      <textarea formControlName="notes" rows="4"></textarea>
-    </label>
+        <mat-form-field appearance="outline">
+          <mat-label>Salary Range (INR)</mat-label>
+          <input matInput formControlName="salary_range" placeholder="e.g. ₹8,00,000 - ₹12,00,000" />
+        </mat-form-field>
 
-    <button type="submit">Save</button>
-  </form>
+        <mat-form-field appearance="outline">
+          <mat-label>Job URL</mat-label>
+          <input matInput formControlName="job_url" placeholder="https://company.com/job" />
+          <mat-error *ngIf="applicationForm.controls.job_url.hasError('pattern')">Enter a valid URL</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Interview Date</mat-label>
+          <input matInput type="date" formControlName="interview_date" />
+          <mat-error *ngIf="applicationForm.controls.interview_date.hasError('pastDate')">Interview date cannot be in the past</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes" rows="4"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="applicationForm.invalid || submitting">
+          <mat-progress-spinner *ngIf="submitting" mode="indeterminate" [diameter]="18"></mat-progress-spinner>
+          <span *ngIf="!submitting">Save</span>
+          <span *ngIf="submitting">Saving...</span>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="quote-card">
+    <div class="quote-eyebrow">Motivation</div>
+    <h3>Keep the pipeline moving</h3>
+    <p class="quote-text">“{{ quote.text }}”</p>
+    <p class="quote-author">{{ quote.author }}</p>
+    <div class="quote-footer">
+      <span>One good application today is better than ten delayed tomorrow.</span>
+      <button mat-stroked-button color="primary" type="button" (click)="refreshQuote()">
+        New Quote
+      </button>
+    </div>
+  </mat-card>
 </section>

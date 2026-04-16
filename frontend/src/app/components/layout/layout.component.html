@@ -1,11 +1,52 @@
-<nav class="navbar">
-  <h1>Job Application Tracker</h1>
-  <div class="nav-links">
-    <a routerLink="/applications" routerLinkActive="active">Applications</a>
-    <a routerLink="/add" routerLinkActive="active">Add</a>
-  </div>
-</nav>
+<mat-sidenav-container class="shell" (window:resize)="onResize()">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [(opened)]="sidenavOpen"
+    class="app-sidenav"
+  >
+    <div class="brand">
+      <mat-icon class="brand-icon">work</mat-icon>
+      <span>Job Tracker</span>
+    </div>
 
-<main class="content">
-  <router-outlet></router-outlet>
-</main>
+    <mat-nav-list class="side-nav-list">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link"
+         (click)="isMobile ? sidenav.close() : null">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/applications" routerLinkActive="active-link"
+         (click)="isMobile ? sidenav.close() : null">
+        <mat-icon matListItemIcon>list_alt</mat-icon>
+        <span matListItemTitle>Applications</span>
+      </a>
+      <a mat-list-item routerLink="/add" routerLinkActive="active-link"
+         (click)="isMobile ? sidenav.close() : null">
+        <mat-icon matListItemIcon>add_circle_outline</mat-icon>
+        <span matListItemTitle>Add New</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="top-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()" matTooltip="Toggle menu" class="menu-btn">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="logo">Job Application Tracker</span>
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="toggleDarkMode()" [matTooltip]="darkMode ? 'Light mode' : 'Dark mode'">
+        <mat-icon>{{ darkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <span class="user-email">{{ authService.getUserEmail() }}</span>
+      <button mat-icon-button (click)="authService.logout()" matTooltip="Logout" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
