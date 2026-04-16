@@ -1,0 +1,40 @@
+<section class="page">
+  <header class="page-header">
+    <h2>Applications</h2>
+    <a routerLink="/add">Add New</a>
+  </header>
+
+  <table class="applications-table" *ngIf="applications.length; else emptyState">
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Applied Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let application of applications">
+        <td>{{ application.company }}</td>
+        <td>{{ application.role }}</td>
+        <td>
+          <select
+            [ngModel]="application.status"
+            (ngModelChange)="onStatusChange(application, $event)"
+          >
+            <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+          </select>
+        </td>
+        <td>{{ application.applied_date | date: 'yyyy-MM-dd' }}</td>
+        <td>
+          <button type="button" (click)="onDelete(application.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #emptyState>
+    <p>No applications yet.</p>
+  </ng-template>
+</section>
