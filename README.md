@@ -1,4 +1,4 @@
-# Job Application Tracker
+<img width="2880" height="1564" alt="image" src="https://github.com/user-attachments/assets/c26239d2-a37b-43f9-b03e-d3538ba0b51e" /># Job Application Tracker
 
 A full-stack web application to track, manage, and analyse job applications — with JWT authentication, a live dashboard with charts, status timelines, paginated application cards, CSV export, interview reminders via email, Redis-cached stats, per-IP rate limiting, and structured JSON logging.
 
@@ -7,13 +7,15 @@ A full-stack web application to track, manage, and analyse job applications — 
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+<img width="2880" height="1566" alt="image" src="https://github.com/user-attachments/assets/deec7c14-a9da-4bfd-b86c-adc4ebb40522" />
+
 
 ### Application Form
-![Application Form](screenshots/application-form.png)
+<img width="2880" height="1564" alt="image" src="https://github.com/user-attachments/assets/3449f728-7b47-4251-819b-962599b773e3" />
+
 
 ### Applications List
-![Applications List](screenshots/applications-list.png)
+<img width="2880" height="1566" alt="image" src="https://github.com/user-attachments/assets/b78c06c5-01e0-461d-9801-ccd167b55618" />
 
 ---
 
@@ -68,7 +70,6 @@ A full-stack web application to track, manage, and analyse job applications — 
 - **Email Reminders** — SendGrid integration sends interview reminder emails (configurable via env)
 - **CSV Export** — Download all applications as a CSV file
 - **Dark Mode** — Full dark-mode support including charts, Material components, and custom status chips
-- **Motivational Quotes** — Randomised quotes on the Add Application page with a "New Quote" button
 
 ---
 
