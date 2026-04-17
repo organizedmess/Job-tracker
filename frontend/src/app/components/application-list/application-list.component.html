@@ -62,7 +62,7 @@
 
               <p class="meta">Applied: {{ application.applied_date | date: 'dd MMM yyyy' }}</p>
               <p class="meta" *ngIf="application.interview_date">Interview: {{ application.interview_date | date: 'dd MMM yyyy' }}</p>
-              <p class="meta" *ngIf="application.salary_range">Salary: {{ application.salary_range }}</p>
+              <p class="meta" *ngIf="application.salary_range">Salary Range: {{ application.salary_range }}</p>
               <a *ngIf="application.job_url" [href]="application.job_url" target="_blank" rel="noopener">Open Job Link</a>
 
               <mat-form-field appearance="outline" class="status-select">

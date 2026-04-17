@@ -9,6 +9,7 @@ import {
 
 import {
   Application,
+  ApplicationsResponse,
   ApplicationFilters,
   ApplicationService,
   StatusHistoryItem,
@@ -38,6 +39,10 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   loading = false;
   exporting = false;
   historyLoading = false;
+  totalApplications = 0;
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
   readonly emptyStateSvg =
     "data:image/svg+xml;utf8," +
     encodeURIComponent(
@@ -70,10 +75,16 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     filters.sort_by = this.sortBy;
     filters.order = this.order;
     if (this.searchTerm.trim()) filters.search = this.searchTerm.trim();
+    filters.page = this.currentPage;
+    filters.limit = this.pageSize;
 
     this.applicationService.getAll(filters).subscribe({
-      next: (data) => {
-        this.applications = data;
+      next: (response: ApplicationsResponse) => {
+        this.applications = response.data ?? [];
+        this.totalApplications = response.meta?.total ?? 0;
+        this.currentPage = response.meta?.page ?? 1;
+        this.pageSize = response.meta?.limit ?? this.pageSize;
+        this.totalPages = response.meta?.total_pages ?? 1;
         this.loading = false;
       },
       error: (err) => {
@@ -161,6 +172,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange(): void {
+    this.currentPage = 1;
     this.fetchApplications();
   }
 

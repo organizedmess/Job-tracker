@@ -10,6 +10,8 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
@@ -54,6 +56,8 @@ import { LoadingSpinnerComponent } from "./shared/components/loading-spinner/loa
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatProgressSpinnerModule,
     MatSelectModule,

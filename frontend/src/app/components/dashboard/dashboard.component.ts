@@ -73,8 +73,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.applicationService.getAll().subscribe({
-      next: (apps) => {
-        this.applications = apps;
+      next: (response) => {
+        this.applications = response.data ?? [];
         this.appsLoaded = true;
         this.loading = false;
         if (this.viewReady) {

@@ -29,6 +29,20 @@ export interface ApplicationFilters {
   sort_by?: string;
   order?: string;
   search?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  total_pages: number;
+}
+
+export interface ApplicationsResponse {
+  data: Application[];
+  meta: PaginationMeta;
 }
 
 export interface StatusHistoryItem {
@@ -55,14 +69,16 @@ export class ApplicationService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getAll(filters: ApplicationFilters = {}): Observable<Application[]> {
+  getAll(filters: ApplicationFilters = {}): Observable<ApplicationsResponse> {
     let params = new HttpParams();
     if (filters.status) params = params.set("status", filters.status);
     if (filters.sort_by) params = params.set("sort_by", filters.sort_by);
     if (filters.order) params = params.set("order", filters.order);
     if (filters.search) params = params.set("search", filters.search);
+    if (filters.page) params = params.set("page", String(filters.page));
+    if (filters.limit) params = params.set("limit", String(filters.limit));
     return this.http
-      .get<Application[]>(this.baseUrl, { params })
+      .get<ApplicationsResponse>(this.baseUrl, { params })
       .pipe(catchError(this.handleError));
   }
 
