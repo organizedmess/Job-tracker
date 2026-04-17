@@ -13,13 +13,13 @@
 
       <mat-card class="filters-card">
         <div class="filters-grid">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Search company or role</mat-label>
             <input matInput [ngModel]="searchTerm" (ngModelChange)="onSearchChange($event)" />
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Status</mat-label>
             <mat-select [(ngModel)]="filterStatus" (selectionChange)="onFilterChange()">
               <mat-option value="">All</mat-option>
@@ -27,7 +27,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Sort By</mat-label>
             <mat-select [(ngModel)]="sortBy" (selectionChange)="onFilterChange()">
               <mat-option value="date">Applied Date</mat-option>
@@ -35,7 +35,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Order</mat-label>
             <mat-select [(ngModel)]="order" (selectionChange)="onFilterChange()">
               <mat-option value="desc">Descending</mat-option>
