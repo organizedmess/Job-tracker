@@ -1,0 +1,21 @@
+# ─── Go / Backend ────────────────────────────────────────────────────────────
+backend/.env
+backend/*.exe
+backend/*.test
+backend/vendor/
+
+# ─── Angular / Frontend ──────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
+
+# ─── Docker ──────────────────────────────────────────────────────────────────
+.dockerignore
+
+# ─── OS & Editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
