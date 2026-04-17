@@ -39,9 +39,14 @@ func main() {
 
 	redisClient := config.ConnectRedis()
 
+	allowedOrigins := []string{"http://localhost:4200", "https://job-tracker-olive-mu.vercel.app"}
+	if extraOrigin := os.Getenv("ALLOWED_ORIGIN"); extraOrigin != "" {
+		allowedOrigins = append(allowedOrigins, extraOrigin)
+	}
+
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4200"},
+		AllowOrigins:     allowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,

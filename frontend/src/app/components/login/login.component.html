@@ -20,7 +20,7 @@
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-        <mat-progress-spinner *ngIf="loading" mode="indeterminate" [diameter]="18"></mat-progress-spinner>
+        <span *ngIf="loading" class="btn-spinner"></span>
         <span>{{ loading ? 'Signing In...' : 'Sign In' }}</span>
       </button>
     </form>
