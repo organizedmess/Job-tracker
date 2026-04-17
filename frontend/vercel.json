@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist/job-tracker-frontend",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist/job-tracker-frontend",
   "framework": null
 }
